@@ -1,4 +1,10 @@
 <?php
+/**
+ * Finance Tracker Application - Prototype
+ * 
+ * @author Prajwan
+ * @description Configuration layer.
+ */
 class Database {
     private $host = '127.0.0.1';
     private $db_name = 'spendly_db';
