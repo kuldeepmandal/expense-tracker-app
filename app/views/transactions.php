@@ -1,3 +1,11 @@
+<?php
+/**
+ * Finance Tracker Application - Prototype
+ * 
+ * @author Krishna
+ * @description UI View component.
+ */
+?>
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
     <h2>All Transactions</h2>
     <a href="index.php?page=dashboard" class="btn btn-outline" style="text-decoration: none; color: inherit; border: 1px solid #E2E8F0;">&larr; Back to Dashboard</a>

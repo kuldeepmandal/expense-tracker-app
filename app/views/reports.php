@@ -1,3 +1,11 @@
+<?php
+/**
+ * Finance Tracker Application - Prototype
+ * 
+ * @author Krishna
+ * @description UI View component.
+ */
+?>
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
     <div style="display: flex; align-items: center; gap: 1rem;">
         <h2>Reports & Budgeting</h2>
@@ -11,8 +19,8 @@
     </button>
 </div>
 
-<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
-    <!-- Left Col: Category Allocations -->
+<div style="display: grid; grid-template-columns: 1fr; gap: 2rem;">
+    <!-- Month Category Allocation -->
     <div class="card" style="background: white; border-radius: 12px; padding: 2rem; border: 1px solid #E2E8F0;">
         <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;">Month Category Allocation</h3>
         
@@ -43,22 +51,6 @@
                 </div>
             </div>
             <?php endforeach; ?>
-        </div>
-    </div>
-
-    <!-- Right Col: Monthly Trend (CSS Bar Chart stub) -->
-    <div class="card" style="background: white; border-radius: 12px; padding: 2rem; border: 1px solid #E2E8F0;">
-        <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;">Weekly Trend</h3>
-        <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">Snapshot of expenses across the month.</p>
-        
-        <div style="display: flex; align-items: flex-end; gap: 10px; height: 150px; padding-bottom: 10px; border-bottom: 1px solid #E2E8F0; margin-bottom: 10px;">
-            <div style="flex: 1; background: var(--color-green-light); height: 40%; border-radius: 4px 4px 0 0;" title="Week 1"></div>
-            <div style="flex: 1; background: var(--color-green-light); height: 85%; border-radius: 4px 4px 0 0;" title="Week 2"></div>
-            <div style="flex: 1; background: var(--color-green-dark); height: 60%; border-radius: 4px 4px 0 0;" title="Week 3"></div>
-            <div style="flex: 1; background: var(--color-red-main); height: 95%; border-radius: 4px 4px 0 0;" title="Week 4"></div>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #64748B;">
-            <span>W1</span><span>W2</span><span>W3</span><span>W4</span>
         </div>
     </div>
 </div>

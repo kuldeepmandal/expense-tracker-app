@@ -1,3 +1,11 @@
+<?php
+/**
+ * Finance Tracker Application - Prototype
+ * 
+ * @author Krishna
+ * @description UI View component.
+ */
+?>
 <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #F8FAFC;">
     <div class="card" style="width: 100%; max-width: 400px; padding: 2rem; background: white; border-radius: 12px; border: 1px solid #E2E8F0;">
         <div style="text-align: center; margin-bottom: 2rem;">
