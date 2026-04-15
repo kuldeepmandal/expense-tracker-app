@@ -1,3 +1,11 @@
+<?php
+/**
+ * Finance Tracker Application - Prototype
+ * 
+ * @author Krishna
+ * @description UI View component.
+ */
+?>
 <header style="margin-bottom: 2rem;">
     <h1 style="font-size: 2rem; display: flex; align-items: center; gap: 0.5rem;">
         Good morning, <?= htmlspecialchars(explode(' ', $loggedInUser['full_name'])[0]) ?> <span style="font-size: 1.5rem;">👋</span>

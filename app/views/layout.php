@@ -1,4 +1,10 @@
 <?php
+/**
+ * Finance Tracker Application - Prototype
+ * 
+ * @author Krishna
+ * @description UI View component.
+ */
 $loggedInUser = null;
 if (isset($_SESSION['user_id'])) {
     require_once 'app/models/User.php';
