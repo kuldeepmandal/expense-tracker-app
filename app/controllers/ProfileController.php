@@ -1,4 +1,10 @@
 <?php
+/**
+ * Finance Tracker Application - Prototype
+ * 
+ * @author Kuldeep
+ * @description Core backend logic component.
+ */
 require_once 'app/models/User.php';
 
 class ProfileController {
