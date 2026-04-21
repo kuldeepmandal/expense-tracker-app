@@ -218,3 +218,5 @@ function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
 
 /* @todo Expand view logic if needed */
+
+<!-- @author Krishna: Dashboard view component -->
