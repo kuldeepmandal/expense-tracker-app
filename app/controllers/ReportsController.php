@@ -9,7 +9,15 @@ require_once 'app/models/Transaction.php';
 require_once 'app/models/User.php';
 require_once 'app/models/Budget.php';
 
+/**
+ * Class ReportsController
+ * Handles the display of financial reports and budget limit management.
+ */
 class ReportsController {
+    /**
+     * Displays the reports view including expenses by category and budget allocations.
+     * Redirects to login if the user is not authenticated.
+     */
     public function index() {
         if (!isset($_SESSION['user_id'])) {
             header("Location: index.php?page=login");
