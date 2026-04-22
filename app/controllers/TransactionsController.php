@@ -7,7 +7,15 @@
  */
 require_once 'app/models/Transaction.php';
 
+/**
+ * Class TransactionsController
+ * Manages the display and logic for user transactions overview.
+ */
 class TransactionsController {
+    /**
+     * Displays the transactions page.
+     * Redirects to login if user is not authenticated.
+     */
     public function index() {
         if (!isset($_SESSION['user_id'])) {
             header("Location: index.php?page=login");

@@ -8,8 +8,15 @@
 require_once 'app/models/User.php';
 require_once 'app/config/MailService.php';
 
+/**
+ * Class AuthController
+ * Handles user authentication including login, registration, verification, and logout.
+ */
 class AuthController {
     
+    /**
+     * Handles user login and redirects to the dashboard upon success.
+     */
     public function login() {
         if (isset($_SESSION['user_id'])) {
             header("Location: index.php?page=dashboard");
@@ -45,6 +52,9 @@ class AuthController {
         require_once 'app/views/layout.php';
     }
 
+    /**
+     * Handles user registration, creates an account, and sends an OTP for verification.
+     */
     public function register() {
         if (isset($_SESSION['user_id'])) {
             header("Location: index.php?page=dashboard");
@@ -78,6 +88,9 @@ class AuthController {
         require_once 'app/views/layout.php';
     }
 
+    /**
+     * Verifies the user's email address using the provided OTP.
+     */
     public function verify() {
         if (isset($_SESSION['user_id'])) {
             header("Location: index.php?page=dashboard");
@@ -109,6 +122,9 @@ class AuthController {
         require_once 'app/views/layout.php';
     }
 
+    /**
+     * Logs out the user by destroying the session and redirects to the login page.
+     */
     public function logout() {
         session_destroy();
         header("Location: index.php?page=login");

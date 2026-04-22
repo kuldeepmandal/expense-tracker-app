@@ -9,7 +9,15 @@ require_once 'app/models/Transaction.php';
 require_once 'app/models/User.php';
 require_once 'app/models/Budget.php';
 
+/**
+ * Class DashboardController
+ * Manages the main dashboard view and operations.
+ */
 class DashboardController {
+    /**
+     * Displays the dashboard and handles quick actions like adding transactions or setting a budget.
+     * Redirects to login if the user is not authenticated.
+     */
     public function index() {
         if (!isset($_SESSION['user_id'])) {
             header("Location: index.php?page=login");
