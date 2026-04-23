@@ -7,14 +7,30 @@
  */
 require_once 'app/config/database.php';
 
+/**
+ * Class Budget
+ * Handles database operations for user budget limits and categories.
+ */
 class Budget {
     private $conn;
 
+    /**
+     * Initializes a new Budget model instance and establishes a database connection.
+     */
     public function __construct() {
         $database = new Database();
         $this->conn = $database->getConnection();
     }
 
+    /**
+     * Sets or updates the budget limit for a specific category and month.
+     *
+     * @param int $userId The ID of the user.
+     * @param string $category The target category.
+     * @param float $limitAmount The budget limit amount.
+     * @param string|null $month The month in 'YYYY-MM' format. Defaults to current month.
+     * @return bool Returns true on success, false on failure.
+     */
     public function setCategoryLimit($userId, $category, $limitAmount, $month = null) {
         if (!$month) $month = date('Y-m');
         
@@ -46,6 +62,13 @@ class Budget {
         }
     }
 
+    /**
+     * Retrieves the budget limits for all categories for a given month.
+     *
+     * @param int $userId The ID of the user.
+     * @param string|null $month The month in 'YYYY-MM' format. Defaults to current month.
+     * @return array An associative array mapping category names to their budget limit.
+     */
     public function getCategoryLimits($userId, $month = null) {
         if (!$month) $month = date('Y-m');
         $query = "SELECT category, limit_amount FROM budgets WHERE user_id = :user_id AND month = :month";
