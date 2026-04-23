@@ -5,6 +5,10 @@
  * @author Prajwan
  * @description Configuration layer.
  */
+/**
+ * Class Database
+ * Handles the application's PDO database connection.
+ */
 class Database {
     private $host = '127.0.0.1';
     private $db_name = 'spendly_db';
@@ -12,6 +16,11 @@ class Database {
     private $password = '';
     public $conn;
 
+    /**
+     * Establishes and returns the database connection.
+     *
+     * @return PDO|null Returns the active PDO connection or null on error.
+     */
     public function getConnection() {
         $this->conn = null;
         try {
