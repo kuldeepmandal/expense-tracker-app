@@ -1,4 +1,9 @@
 <?php
+/**
+ * Finance Tracker Application - Prototype
+ * 
+ * @author Prajwan
+ */
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -8,9 +13,19 @@ if (file_exists($autoloadPath)) {
     require_once $autoloadPath;
 }
 
+/**
+ * Class MailService
+ * Handles sending emails using PHPMailer (e.g., OTPs).
+ */
 class MailService {
+    /**
+     * @var PHPMailer The PHPMailer instance used for sending emails.
+     */
     private $mail;
 
+    /**
+     * Initializes the MailService and configures the SMTP settings.
+     */
     public function __construct() {
         $this->mail = new PHPMailer(true);
         try {
@@ -31,6 +46,13 @@ class MailService {
         }
     }
 
+    /**
+     * Sends a One-Time Password (OTP) to the specified email address.
+     *
+     * @param string $userEmail The recipient's email address.
+     * @param string $otpCode The OTP code to send.
+     * @return bool Returns true if email was sent successfully, false otherwise.
+     */
     public function sendOTP($userEmail, $otpCode) {
         try {
             $this->mail->clearAddresses();
