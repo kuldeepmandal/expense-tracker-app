@@ -7,14 +7,31 @@
  */
 require_once 'app/config/database.php';
 
+/**
+ * Class Transaction
+ * Handles database operations related to user transactions.
+ */
 class Transaction {
     private $conn;
 
+    /**
+     * Initializes a new Transaction model instance and establishes a database connection.
+     */
     public function __construct() {
         $database = new Database();
         $this->conn = $database->getConnection();
     }
 
+    /**
+     * Records a new transaction (income or expense).
+     *
+     * @param int $userId The ID of the user.
+     * @param string $type The type of transaction ('income' or 'expense').
+     * @param float $amount The transaction amount.
+     * @param string $category The category of the transaction.
+     * @param string $description An optional description for the transaction.
+     * @return bool Returns true on success, false on failure.
+     */
     public function addTransaction($userId, $type, $amount, $category, $description) {
         $query = "INSERT INTO transactions (user_id, type, amount, category, description, transaction_date) 
                   VALUES (:user_id, :type, :amount, :category, :description, CURDATE())";
@@ -29,6 +46,13 @@ class Transaction {
         return $stmt->execute();
     }
 
+    /**
+     * Retrieves the most recent transactions for a user.
+     *
+     * @param int $userId The ID of the user.
+     * @param int $limit The maximum number of transactions to retrieve (default is 4).
+     * @return array An array of recent transaction records.
+     */
     public function getRecent($userId, $limit = 4) {
         $query = "SELECT * FROM transactions WHERE user_id = :user_id ORDER BY transaction_date DESC, id DESC LIMIT :limit";
         $stmt = $this->conn->prepare($query);
@@ -38,6 +62,12 @@ class Transaction {
         return $stmt->fetchAll();
     }
 
+    /**
+     * Retrieves all transactions for a user ordered by date descending.
+     *
+     * @param int $userId The ID of the user.
+     * @return array An array of all transaction records.
+     */
     public function getAll($userId) {
         $query = "SELECT * FROM transactions WHERE user_id = :user_id ORDER BY transaction_date DESC, id DESC";
         $stmt = $this->conn->prepare($query);
@@ -46,6 +76,13 @@ class Transaction {
         return $stmt->fetchAll();
     }
 
+    /**
+     * Calculates the total income and total expense for a specific month.
+     *
+     * @param int $userId The ID of the user.
+     * @param string|null $month The month in 'YYYY-MM' format (defaults to current month).
+     * @return array An associative array containing 'income' and 'expense' totals.
+     */
     public function getCurrentMonthSummary($userId, $month = null) {
         if (!$month) $month = date('Y-m');
         $query = "SELECT type, SUM(amount) as total FROM transactions 
@@ -67,6 +104,13 @@ class Transaction {
         }
         return $summary;
     }
+    /**
+     * Retrieves the total expenses grouped by category for a specific month.
+     *
+     * @param int $userId The ID of the user.
+     * @param string|null $month The month in 'YYYY-MM' format (defaults to current month).
+     * @return array An associative array mapping category names to their respective total expenses.
+     */
     public function getExpensesByCategory($userId, $month = null) {
         if (!$month) $month = date('Y-m');
         $query = "SELECT category, SUM(amount) as total FROM transactions 
