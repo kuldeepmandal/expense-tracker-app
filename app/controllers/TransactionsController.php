@@ -25,7 +25,16 @@ class TransactionsController {
         $userId = $_SESSION['user_id'];
         $transactionModel = new Transaction();
         
-        $transactions = $transactionModel->getAll($userId);
+        // Pagination logic
+        $limit = 10;
+        $currentPage = isset($_GET['p']) ? (int)$_GET['p'] : 1;
+        if ($currentPage < 1) $currentPage = 1;
+        $offset = ($currentPage - 1) * $limit;
+
+        $totalTransactions = $transactionModel->getTotalCount($userId);
+        $totalPages = ceil($totalTransactions / $limit);
+
+        $transactions = $transactionModel->getPaginated($userId, $limit, $offset);
         
         $page = 'transactions';
         $view = 'app/views/transactions.php';

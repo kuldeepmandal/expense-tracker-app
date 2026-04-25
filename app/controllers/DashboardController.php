@@ -36,8 +36,9 @@ class DashboardController {
                 $type = $action === 'add_expense' ? 'expense' : 'income';
                 $amount = $_POST['amount'] ?? 0;
                 $category = $_POST['category'] ?? 'Uncategorized';
+                $paymentMethod = $_POST['payment_method'] ?? 'Cash';
                 $description = $_POST['description'] ?? '';
-                $transactionModel->addTransaction($userId, $type, $amount, $category, $description);
+                $transactionModel->addTransaction($userId, $type, $amount, $category, $description, $paymentMethod);
             } elseif ($action === 'set_budget') {
                 $baseBudget = $_POST['base_budget'] ?? 0;
                 $budgetModel->setCategoryLimit($userId, 'Overall', $baseBudget);
@@ -86,6 +87,7 @@ class DashboardController {
                 'category' => $tx['category'],
                 'type' => $tx['type'],
                 'amount' => $tx['amount'],
+                'payment_method' => $tx['payment_method'],
                 'icon' => $icon
             ];
         }
