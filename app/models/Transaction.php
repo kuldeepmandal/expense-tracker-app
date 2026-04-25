@@ -32,15 +32,16 @@ class Transaction {
      * @param string $description An optional description for the transaction.
      * @return bool Returns true on success, false on failure.
      */
-    public function addTransaction($userId, $type, $amount, $category, $description) {
-        $query = "INSERT INTO transactions (user_id, type, amount, category, description, transaction_date) 
-                  VALUES (:user_id, :type, :amount, :category, :description, CURDATE())";
+    public function addTransaction($userId, $type, $amount, $category, $description, $paymentMethod = null) {
+        $query = "INSERT INTO transactions (user_id, type, amount, category, payment_method, description, transaction_date) 
+                  VALUES (:user_id, :type, :amount, :category, :payment_method, :description, CURDATE())";
         
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':user_id', $userId);
         $stmt->bindParam(':type', $type);
         $stmt->bindParam(':amount', $amount);
         $stmt->bindParam(':category', $category);
+        $stmt->bindParam(':payment_method', $paymentMethod);
         $stmt->bindParam(':description', $description);
         
         return $stmt->execute();
@@ -74,6 +75,38 @@ class Transaction {
         $stmt->bindParam(':user_id', $userId);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+
+    /**
+     * Retrieves paginated transactions for a user.
+     *
+     * @param int $userId The ID of the user.
+     * @param int $limit The number of records to retrieve.
+     * @param int $offset The offset for the records.
+     * @return array An array of transaction records.
+     */
+    public function getPaginated($userId, $limit, $offset) {
+        $query = "SELECT * FROM transactions WHERE user_id = :user_id ORDER BY transaction_date DESC, id DESC LIMIT :limit OFFSET :offset";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Retrieves the total count of transactions for a user.
+     *
+     * @param int $userId The ID of the user.
+     * @return int The total number of transactions.
+     */
+    public function getTotalCount($userId) {
+        $query = "SELECT COUNT(*) FROM transactions WHERE user_id = :user_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':user_id', $userId);
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
     }
 
     /**
