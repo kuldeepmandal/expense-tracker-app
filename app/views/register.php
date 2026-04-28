@@ -26,7 +26,14 @@
         </div>
         <div>
             <label style="font-weight: 500; font-size: 0.9rem; margin-bottom: 0.5rem; display: block;">Password</label>
-            <input type="password" name="password" required style="width: 100%; padding: 0.75rem; border: 1px solid #E2E8F0; border-radius: 8px;" placeholder="••••••••">
+            <div style="position: relative;">
+                <input type="password" id="registerPassword" name="password" required style="width: 100%; padding: 0.75rem; padding-right: 2.5rem; border: 1px solid #E2E8F0; border-radius: 8px;" placeholder="••••••••">
+                <button type="button" onclick="togglePasswordVisibility('registerPassword')" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #64748B; padding: 0;">
+                    <svg id="registerPassword-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                        <path d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,124,8.69,124.76a8,8,0,0,0,0,6.48c.35.79,8.82,19.58,27.65,38.41C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.35c18.83-18.83,27.3-37.62,27.65-38.41A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A133.47,133.47,0,0,1,25,128,133.33,133.33,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A133.46,133.46,0,0,1,231.05,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
         <button type="submit" class="btn btn-expense" style="width: 100%; justify-content: center; background-color: var(--color-green-dark); margin-top: 1rem;">Sign Up</button>
     </form>

@@ -9,7 +9,15 @@ require_once 'app/models/Transaction.php';
 require_once 'app/models/User.php';
 require_once 'app/models/Budget.php';
 
+/**
+ * Class DashboardController
+ * Manages the main dashboard view and operations.
+ */
 class DashboardController {
+    /**
+     * Displays the dashboard and handles quick actions like adding transactions or setting a budget.
+     * Redirects to login if the user is not authenticated.
+     */
     public function index() {
         if (!isset($_SESSION['user_id'])) {
             header("Location: index.php?page=login");
@@ -28,8 +36,9 @@ class DashboardController {
                 $type = $action === 'add_expense' ? 'expense' : 'income';
                 $amount = $_POST['amount'] ?? 0;
                 $category = $_POST['category'] ?? 'Uncategorized';
+                $paymentMethod = $_POST['payment_method'] ?? 'Cash';
                 $description = $_POST['description'] ?? '';
-                $transactionModel->addTransaction($userId, $type, $amount, $category, $description);
+                $transactionModel->addTransaction($userId, $type, $amount, $category, $description, $paymentMethod);
             } elseif ($action === 'set_budget') {
                 $baseBudget = $_POST['base_budget'] ?? 0;
                 $budgetModel->setCategoryLimit($userId, 'Overall', $baseBudget);
@@ -78,6 +87,7 @@ class DashboardController {
                 'category' => $tx['category'],
                 'type' => $tx['type'],
                 'amount' => $tx['amount'],
+                'payment_method' => $tx['payment_method'],
                 'icon' => $icon
             ];
         }
