@@ -31,3 +31,8 @@
         Don't have an account? <a href="index.php?page=register" style="color: var(--color-green-dark); font-weight: 600;">Sign up</a>
     </p>
 </div>
+
+
+/* @todo Expand view logic if needed */
+
+<!-- @author Krishna: Login view component -->
