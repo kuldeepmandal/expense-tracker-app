@@ -97,7 +97,7 @@ function closeModal(id) { document.getElementById(id).style.display = 'none'; }
             </div>
             <div class="form-group">
                 <label>Monthly Limit (<?= $currency ?>)</label>
-                <input type="number" name="limit_amount" required min="0" placeholder="e.g. 5000">
+                <input type="number" name="limit_amount" required min="1" oninvalid="this.setCustomValidity('Amount must be greater than 0')" oninput="this.setCustomValidity('')" placeholder="e.g. 5000">
             </div>
             <button type="submit" class="btn btn-income" style="width: 100%; justify-content: center;">Save Limit</button>
         </form>

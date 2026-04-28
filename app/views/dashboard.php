@@ -86,7 +86,7 @@
                         </div>
                         <div>
                             <h4 style="font-size: 1rem; margin-bottom: 4px;"><?= htmlspecialchars($trx['title']) ?></h4>
-                            <p class="text-muted"><?= htmlspecialchars($trx['date']) ?> • <?= htmlspecialchars($trx['category']) ?></p>
+                            <p class="text-muted"><?= htmlspecialchars($trx['date']) ?> &bull; <?= htmlspecialchars($trx['category']) ?><?= !empty($trx['payment_method']) ? ' &bull; ' . htmlspecialchars($trx['payment_method']) : '' ?></p>
                         </div>
                     </div>
                     <div style="font-weight: bold; font-size: 1.1rem; color: <?= $trx['type'] === 'expense' ? 'var(--color-red-main)' : 'var(--color-green-dark)' ?>;">
@@ -160,6 +160,13 @@ function closeModal(id) { document.getElementById(id).style.display = 'none'; }
                 </select>
             </div>
             <div class="form-group">
+                <label>Payment Method</label>
+                <select name="payment_method" required>
+                    <option value="Cash">Cash</option>
+                    <option value="Online">Online / Card</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label>Description (Optional)</label>
                 <input type="text" name="description" placeholder="e.g. Lunch at Cafe">
             </div>
@@ -189,6 +196,13 @@ function closeModal(id) { document.getElementById(id).style.display = 'none'; }
                 </select>
             </div>
             <div class="form-group">
+                <label>Payment Method</label>
+                <select name="payment_method" required>
+                    <option value="Cash">Cash</option>
+                    <option value="Online">Online / Bank</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label>Description (Optional)</label>
                 <input type="text" name="description" placeholder="e.g. Freelance project">
             </div>
@@ -207,7 +221,7 @@ function closeModal(id) { document.getElementById(id).style.display = 'none'; }
             <input type="hidden" name="action" value="set_budget">
             <div class="form-group">
                 <label>Base Budget Limit (<?= $loggedInUser['currency_preference'] ?>)</label>
-                <input type="number" name="base_budget" required min="0" value="<?= $data['base_budget'] ?>">
+                <input type="number" name="base_budget" required min="1" oninvalid="this.setCustomValidity('Amount must be greater than 0')" oninput="this.setCustomValidity('')" value="<?= $data['base_budget'] ?>">
             </div>
             <button type="submit" class="btn btn-income" style="width: 100%; justify-content: center;">Save Budget</button>
         </form>
@@ -215,8 +229,3 @@ function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 </div>
 
 
-
-
-/* @todo Expand view logic if needed */
-
-<!-- @author Krishna: Dashboard view component -->

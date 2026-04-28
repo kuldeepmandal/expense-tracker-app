@@ -7,7 +7,15 @@
  */
 require_once 'app/models/User.php';
 
+/**
+ * Class ProfileController
+ * Manages user profile settings, including personal info, password, and preferences.
+ */
 class ProfileController {
+    /**
+     * Displays the profile page and handles profile update requests.
+     * Redirects to login if user is not authenticated.
+     */
     public function index() {
         if (!isset($_SESSION['user_id'])) {
             header("Location: index.php?page=login");

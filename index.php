@@ -2,6 +2,10 @@
 // Root router
 session_start();
 
+// Prevent browser caching so 'back' button requires a re-fetch (and thus hits the auth guard)
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 
 // Public routes
