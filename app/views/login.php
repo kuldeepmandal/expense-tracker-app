@@ -34,3 +34,5 @@
 
 
 /* @todo Expand view logic if needed */
+
+<!-- @author Krishna: Login view component -->
