@@ -18,6 +18,7 @@ if (isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spendly</title>
+    <link rel="icon" href="assets/images/Fabicon.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="public/css/style.css">
@@ -27,7 +28,10 @@ if (isset($_SESSION['user_id'])) {
         <!-- Navigation -->
         <?php if ($loggedInUser): ?>
         <nav class="navbar">
-            <h2>Spendly</h2>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <img src="assets/images/Logo.png" alt="Spendly Logo" style="height: 32px; width: auto;">
+                <h2 style="margin: 0;">Spendly</h2>
+            </div>
             
             <div class="nav-links">
                 <a href="index.php?page=dashboard" class="<?= $page == 'dashboard' ? 'active' : '' ?>">Home</a>
@@ -48,7 +52,10 @@ if (isset($_SESSION['user_id'])) {
         </nav>
         <?php else: ?>
         <nav class="navbar" style="justify-content: center;">
-            <h2>Spendly</h2>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <img src="assets/images/Logo.png" alt="Spendly Logo" style="height: 40px; width: auto;">
+                <h2 style="margin: 0;">Spendly</h2>
+            </div>
         </nav>
         <?php endif; ?>
 
