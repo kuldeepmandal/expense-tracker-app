@@ -28,10 +28,7 @@ if (isset($_SESSION['user_id'])) {
         <!-- Navigation -->
         <?php if ($loggedInUser): ?>
         <nav class="navbar">
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <img src="assets/images/Logo.png" alt="Spendly Logo" style="height: 32px; width: auto;">
-                <h2 style="margin: 0;">Spendly</h2>
-            </div>
+            <h2>Spendly</h2>
             
             <div class="nav-links">
                 <a href="index.php?page=dashboard" class="<?= $page == 'dashboard' ? 'active' : '' ?>">Home</a>
@@ -52,10 +49,7 @@ if (isset($_SESSION['user_id'])) {
         </nav>
         <?php else: ?>
         <nav class="navbar" style="justify-content: center;">
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <img src="assets/images/Logo.png" alt="Spendly Logo" style="height: 40px; width: auto;">
-                <h2 style="margin: 0;">Spendly</h2>
-            </div>
+            <h2>Spendly</h2>
         </nav>
         <?php endif; ?>
 
