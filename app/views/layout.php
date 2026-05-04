@@ -21,9 +21,12 @@ if (isset($_SESSION['user_id'])) {
     <link rel="icon" href="assets/images/Fabicon.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/style.css?v=<?= time() ?>">
 </head>
 <body>
+    <?php if (in_array($page, ['login', 'register'])): ?>
+        <?php require_once $view; ?>
+    <?php else: ?>
     <div class="container">
         <!-- Navigation -->
         <?php if ($loggedInUser): ?>
@@ -59,6 +62,7 @@ if (isset($_SESSION['user_id'])) {
         </main>
 
     </div>
+    <?php endif; ?>
     <script>
         // Force a reload if the page is loaded from the Back-Forward Cache (BFCache)
         window.onpageshow = function(event) {
