@@ -172,12 +172,6 @@ ul {
 }
 
 /* Grid Layouts */
-<<<<<<< Updated upstream
-.dashboard-metrics { display: flex; gap: 1.5rem; margin-bottom: 2rem; }
-.dashboard-metrics .metric-card { flex: 1; padding: 1.5rem; border-radius: var(--border-radius-lg); }
-<<<<<<< HEAD
-=======
-=======
 .dashboard-metrics {
   display: flex;
   gap: 1.5rem;
@@ -189,22 +183,16 @@ ul {
   padding: 1.5rem;
   border-radius: var(--border-radius-lg);
 }
->>>>>>> krishna-frontend
 
 /* Split-Screen Auth Layout */
 .auth-split-layout {
   display: flex;
   height: 100vh;
-<<<<<<< HEAD
-  width: 100vw;
-  overflow: hidden;
-=======
   width: 100%;
   overflow: hidden;
   position: fixed;
   top: 0;
   left: 0;
->>>>>>> krishna-frontend
 }
 
 .auth-left {
@@ -212,10 +200,6 @@ ul {
   display: flex;
   flex-direction: column;
   padding: 4rem 10%;
-<<<<<<< HEAD
-  background-color: #FFFFFF;
-  overflow-y: auto;
-=======
   background-color: var(--bg-card);
   background-image: 
     radial-gradient(at 0% 0%, rgba(224, 242, 254, 0.7) 0px, transparent 50%),
@@ -238,7 +222,6 @@ ul {
     radial-gradient(at 100% 0%, rgba(15, 23, 42, 0.5) 0px, transparent 50%),
     radial-gradient(at 100% 100%, rgba(127, 29, 29, 0.2) 0px, transparent 50%),
     radial-gradient(at 0% 100%, rgba(6, 78, 59, 0.2) 0px, transparent 50%);
->>>>>>> krishna-frontend
 }
 
 .auth-right {
@@ -254,10 +237,6 @@ ul {
 }
 
 @media (max-width: 900px) {
-<<<<<<< HEAD
-  .auth-right { display: none; }
-  .auth-left { padding: 3rem 5%; }
-=======
   .auth-right {
     display: none;
   }
@@ -265,7 +244,6 @@ ul {
   .auth-left {
     padding: 3rem 5%;
   }
->>>>>>> krishna-frontend
 }
 
 .auth-logo {
@@ -275,28 +253,16 @@ ul {
   font-weight: bold;
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
-<<<<<<< HEAD
-  color: #111827;
-=======
   color: var(--text-primary);
->>>>>>> krishna-frontend
 }
 
 .auth-pill-nav {
   display: inline-flex;
-<<<<<<< HEAD
-  background: #F8FAFC;
-  border-radius: 50px;
-  padding: 0.25rem;
-  margin: 1.5rem 0 2.5rem;
-  border: 1px solid #E2E8F0;
-=======
   background: var(--bg-input);
   border-radius: 50px;
   padding: 0.25rem;
   margin: 1.5rem 0 2.5rem;
   border: 1px solid var(--border-color);
->>>>>>> krishna-frontend
 }
 
 .auth-pill-nav a {
@@ -309,13 +275,8 @@ ul {
 }
 
 .auth-pill-nav a.active {
-<<<<<<< HEAD
-  background: #FFFFFF;
-  color: #0F172A;
-=======
   background: var(--bg-card);
   color: var(--text-primary);
->>>>>>> krishna-frontend
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
@@ -334,15 +295,6 @@ ul {
 .auth-input {
   width: 100%;
   padding: 0.875rem 1rem;
-<<<<<<< HEAD
-  background: #F8FAFC;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  color: #0F172A;
-  outline: none;
-}
-=======
   background: var(--bg-input);
   border: 1px solid var(--border-color);
   border-radius: 8px;
@@ -350,8 +302,6 @@ ul {
   color: var(--text-primary);
   outline: none;
 }
-
->>>>>>> krishna-frontend
 .auth-input:focus {
   box-shadow: 0 0 0 2px rgba(11, 138, 97, 0.2);
 }
@@ -369,14 +319,9 @@ ul {
   margin-top: 1rem;
   transition: background 0.2s;
 }
-<<<<<<< HEAD
-.auth-btn:hover { background: #1E293B; }
-=======
-
 .auth-btn:hover {
   background: #1E293B;
 }
->>>>>>> krishna-frontend
 
 .divider {
   display: flex;
@@ -388,22 +333,12 @@ ul {
   margin: 1.5rem 0;
   text-transform: uppercase;
 }
-<<<<<<< HEAD
-.divider::before, .divider::after {
-=======
-
 .divider::before,
 .divider::after {
->>>>>>> krishna-frontend
   content: '';
   flex: 1;
   border-bottom: 1px solid #E2E8F0;
 }
-<<<<<<< HEAD
-.divider:not(:empty)::before { margin-right: .5em; }
-.divider:not(:empty)::after { margin-left: .5em; }
-=======
-
 .divider:not(:empty)::before {
   margin-right: .5em;
 }
@@ -411,7 +346,6 @@ ul {
 .divider:not(:empty)::after {
   margin-left: .5em;
 }
->>>>>>> krishna-frontend
 
 .auth-glass-widget {
   background: rgba(255, 255, 255, 0.05);
@@ -439,8 +373,7 @@ ul {
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
-<<<<<<< HEAD
-=======
+
 
 /* Metric Cards */
 .metric-grid {
@@ -546,5 +479,3 @@ ul {
 .form-group select:focus {
   border-color: var(--color-green-dark);
 }
->>>>>>> Stashed changes
->>>>>>> krishna-frontend
