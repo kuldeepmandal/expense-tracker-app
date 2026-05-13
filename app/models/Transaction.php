@@ -48,16 +48,33 @@ class Transaction {
     }
 
     /**
+     * Deletes a specific transaction belonging to the user.
+     *
+     * @param int $userId The ID of the user.
+     * @param int $transactionId The ID of the transaction to delete.
+     * @return bool Returns true on success, false on failure.
+     */
+    public function deleteTransaction($userId, $transactionId) {
+        $query = "DELETE FROM transactions WHERE id = :id AND user_id = :user_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $transactionId, PDO::PARAM_INT);
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    /**
      * Retrieves the most recent transactions for a user.
      *
      * @param int $userId The ID of the user.
      * @param int $limit The maximum number of transactions to retrieve (default is 4).
      * @return array An array of recent transaction records.
      */
-    public function getRecent($userId, $limit = 4) {
-        $query = "SELECT * FROM transactions WHERE user_id = :user_id ORDER BY transaction_date DESC, id DESC LIMIT :limit";
+    public function getRecent($userId, $limit = 4, $month = null) {
+        if (!$month) $month = date('Y-m');
+        $query = "SELECT * FROM transactions WHERE user_id = :user_id AND DATE_FORMAT(transaction_date, '%Y-%m') = :month ORDER BY transaction_date DESC, id DESC LIMIT :limit";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':month', $month);
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll();
@@ -69,10 +86,12 @@ class Transaction {
      * @param int $userId The ID of the user.
      * @return array An array of all transaction records.
      */
-    public function getAll($userId) {
-        $query = "SELECT * FROM transactions WHERE user_id = :user_id ORDER BY transaction_date DESC, id DESC";
+    public function getAll($userId, $month = null) {
+        if (!$month) $month = date('Y-m');
+        $query = "SELECT * FROM transactions WHERE user_id = :user_id AND DATE_FORMAT(transaction_date, '%Y-%m') = :month ORDER BY transaction_date DESC, id DESC";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':user_id', $userId);
+        $stmt->bindParam(':month', $month);
         $stmt->execute();
         return $stmt->fetchAll();
     }
@@ -85,10 +104,12 @@ class Transaction {
      * @param int $offset The offset for the records.
      * @return array An array of transaction records.
      */
-    public function getPaginated($userId, $limit, $offset) {
-        $query = "SELECT * FROM transactions WHERE user_id = :user_id ORDER BY transaction_date DESC, id DESC LIMIT :limit OFFSET :offset";
+    public function getPaginated($userId, $limit, $offset, $month = null) {
+        if (!$month) $month = date('Y-m');
+        $query = "SELECT * FROM transactions WHERE user_id = :user_id AND DATE_FORMAT(transaction_date, '%Y-%m') = :month ORDER BY transaction_date DESC, id DESC LIMIT :limit OFFSET :offset";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':month', $month);
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
@@ -101,10 +122,12 @@ class Transaction {
      * @param int $userId The ID of the user.
      * @return int The total number of transactions.
      */
-    public function getTotalCount($userId) {
-        $query = "SELECT COUNT(*) FROM transactions WHERE user_id = :user_id";
+    public function getTotalCount($userId, $month = null) {
+        if (!$month) $month = date('Y-m');
+        $query = "SELECT COUNT(*) FROM transactions WHERE user_id = :user_id AND DATE_FORMAT(transaction_date, '%Y-%m') = :month";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':user_id', $userId);
+        $stmt->bindParam(':month', $month);
         $stmt->execute();
         return (int) $stmt->fetchColumn();
     }

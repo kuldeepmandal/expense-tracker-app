@@ -66,6 +66,28 @@ class AuthController {
             $fullName = $_POST['full_name'] ?? '';
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
+            $confirmPassword = $_POST['confirm_password'] ?? '';
+            
+            if ($password !== $confirmPassword) {
+                $error = "Passwords do not match.";
+            } elseif (strlen($password) < 6 || strlen($password) > 12) {
+                $error = "Password must be between 6 and 12 characters.";
+            } elseif (!preg_match('/[A-Z]/', $password)) {
+                $error = "Password must include at least one uppercase letter.";
+            } elseif (!preg_match('/[a-z]/', $password)) {
+                $error = "Password must include at least one lowercase letter.";
+            } elseif (!preg_match('/[0-9]/', $password)) {
+                $error = "Password must include at least one number.";
+            } elseif (!preg_match('/[^A-Za-z0-9]/', $password)) {
+                $error = "Password must include at least one special character.";
+            }
+
+            if (isset($error)) {
+                $page = 'register';
+                $view = 'app/views/register.php';
+                require_once 'app/views/layout.php';
+                return;
+            }
             
             $otpCode = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
             
@@ -119,6 +141,104 @@ class AuthController {
 
         $page = 'verify';
         $view = 'app/views/verify.php';
+        require_once 'app/views/layout.php';
+    }
+
+    /**
+     * Handles the forgot password request.
+     */
+    public function forgotPassword() {
+        if (isset($_SESSION['user_id'])) {
+            header("Location: index.php?page=dashboard");
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userModel = new User();
+            $email = $_POST['email'] ?? '';
+            $user = $userModel->getUserByEmail($email);
+            
+            if ($user) {
+                $otpCode = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+                $userModel->setResetOTP($user['id'], $otpCode);
+                
+                $mailService = new MailService();
+                $mailService->sendOTP($email, $otpCode);
+                
+                $_SESSION['reset_user_id'] = $user['id'];
+                $_SESSION['reset_email'] = $email;
+                header("Location: index.php?page=reset_password");
+                exit;
+            } else {
+                $error = "No account found with that email address.";
+                $page = 'forgot_password';
+                $view = 'app/views/forgot_password.php';
+                require_once 'app/views/layout.php';
+                return;
+            }
+        }
+
+        $page = 'forgot_password';
+        $view = 'app/views/forgot_password.php';
+        require_once 'app/views/layout.php';
+    }
+
+    /**
+     * Handles resetting the password using OTP.
+     */
+    public function resetPassword() {
+        if (isset($_SESSION['user_id'])) {
+            header("Location: index.php?page=dashboard");
+            exit;
+        }
+        if (!isset($_SESSION['reset_user_id'])) {
+            header("Location: index.php?page=forgot_password");
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userModel = new User();
+            $otp = $_POST['otp'] ?? '';
+            $password = $_POST['password'] ?? '';
+            $confirmPassword = $_POST['confirm_password'] ?? '';
+            $userId = $_SESSION['reset_user_id'];
+            
+            if ($password !== $confirmPassword) {
+                $error = "Passwords do not match.";
+            } elseif (strlen($password) < 6 || strlen($password) > 12) {
+                $error = "Password must be between 6 and 12 characters.";
+            } elseif (!preg_match('/[A-Z]/', $password)) {
+                $error = "Password must include at least one uppercase letter.";
+            } elseif (!preg_match('/[a-z]/', $password)) {
+                $error = "Password must include at least one lowercase letter.";
+            } elseif (!preg_match('/[0-9]/', $password)) {
+                $error = "Password must include at least one number.";
+            } elseif (!preg_match('/[^A-Za-z0-9]/', $password)) {
+                $error = "Password must include at least one special character.";
+            } else {
+                if ($userModel->verifyResetOTP($userId, $otp)) {
+                    $userModel->updatePassword($userId, $password);
+                    unset($_SESSION['reset_user_id'], $_SESSION['reset_email']);
+                    $success = "Password has been reset successfully!";
+                    $page = 'reset_password';
+                    $view = 'app/views/reset_password.php';
+                    require_once 'app/views/layout.php';
+                    return;
+                } else {
+                    $error = "Invalid or expired OTP.";
+                }
+            }
+
+            if (isset($error)) {
+                $page = 'reset_password';
+                $view = 'app/views/reset_password.php';
+                require_once 'app/views/layout.php';
+                return;
+            }
+        }
+
+        $page = 'reset_password';
+        $view = 'app/views/reset_password.php';
         require_once 'app/views/layout.php';
     }
 

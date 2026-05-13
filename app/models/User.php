@@ -97,6 +97,51 @@ class User {
         }
         return false;
     }
+
+    /**
+     * Sets a reset password OTP for a user.
+     *
+     * @param int $userId The user's ID.
+     * @param string $otpCode The generated OTP.
+     * @return bool
+     */
+    public function setResetOTP($userId, $otpCode) {
+        $expiresAt = date('Y-m-d H:i:s', strtotime('+15 minutes'));
+        $query = "UPDATE users SET otp_code = :otp_code, otp_expires_at = :otp_expires_at WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':otp_code', $otpCode);
+        $stmt->bindParam(':otp_expires_at', $expiresAt);
+        $stmt->bindParam(':id', $userId);
+        return $stmt->execute();
+    }
+
+    /**
+     * Verifies a reset password OTP.
+     *
+     * @param int $userId The user's ID.
+     * @param string $code The OTP code submitted by the user.
+     * @return bool Returns true if valid and not expired.
+     */
+    public function verifyResetOTP($userId, $code) {
+        $query = "SELECT * FROM users WHERE id = :id AND otp_code = :code";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $userId);
+        $stmt->bindParam(':code', $code);
+        $stmt->execute();
+        
+        if ($stmt->rowCount() > 0) {
+            $user = $stmt->fetch();
+            if (strtotime($user['otp_expires_at']) > time()) {
+                // Clear OTP
+                $update = "UPDATE users SET otp_code = NULL, otp_expires_at = NULL WHERE id = :id";
+                $upStmt = $this->conn->prepare($update);
+                $upStmt->bindParam(':id', $userId);
+                $upStmt->execute();
+                return true;
+            }
+        }
+        return false;
+    }
     
     /**
      * Retrieves basic user details by ID.
@@ -108,6 +153,20 @@ class User {
         $query = "SELECT id, full_name, email, currency_preference, base_budget, total_savings FROM users WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
+    /**
+     * Retrieves basic user details by email.
+     *
+     * @param string $email The user's email address.
+     * @return array|bool Returns user data, or false if not found.
+     */
+    public function getUserByEmail($email) {
+        $query = "SELECT id, full_name, email, is_verified FROM users WHERE email = :email";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':email', $email);
         $stmt->execute();
         return $stmt->fetch();
     }
