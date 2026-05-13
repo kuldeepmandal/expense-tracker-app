@@ -6,7 +6,7 @@
  * @description UI View component.
  */
 ?>
-<header style="margin-bottom: 2rem;">
+<header style="margin-bottom: 2rem; color: var(--text-primary);">
     <h1 style="font-size: 2rem; display: flex; align-items: center; gap: 0.5rem;">
         Good morning, <?= htmlspecialchars(explode(' ', $loggedInUser['full_name'])[0]) ?> <span style="font-size: 1.5rem;">👋</span>
     </h1>
@@ -14,38 +14,38 @@
 </header>
 
 <!-- Summary Cards Row -->
-<div class="dashboard-metrics" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem;">
-    <div class="metric-card" style="background-color: #F8F9FB; border: 1px solid #E2E8F0; padding: 1.5rem; border-radius: 16px;">
+<div class="metric-grid">
+    <div class="metric-card">
         <div style="display: flex; justify-content: space-between;">
             <p class="text-muted" style="text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; font-size: 0.75rem; font-weight: bold;">Budget Pool</p>
             <button onclick="openModal('budgetModal')" style="background: none; border: none; cursor: pointer; color: var(--color-green-dark);"><i class="ph ph-pencil-simple"></i>Edit</button>
         </div>
-        <h2 style="font-size: 1.8rem;"><?= $loggedInUser['currency_preference'] ?> <?= number_format($data['budget_pool']) ?></h2>
+        <h2><?= $loggedInUser['currency_preference'] ?> <?= number_format($data['budget_pool']) ?></h2>
         <p class="text-muted" style="font-size: 0.8rem; margin-top: 0.5rem;">Base: <?= $loggedInUser['currency_preference'] ?> <?= number_format($data['base_budget']) ?></p>
     </div>
     
-    <div class="metric-card" style="background-color: #FFEAEC; border: none; padding: 1.5rem; border-radius: 16px;">
-        <p style="color: #D24153; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; font-size: 0.75rem; font-weight: bold;">Total Spent</p>
-        <h2 style="font-size: 1.8rem; color: #B31E2A;"><?= $loggedInUser['currency_preference'] ?> <?= number_format($data['spent']) ?></h2>
+    <div class="metric-card metric-card-expense">
+        <p style="color: var(--color-red-main); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; font-size: 0.75rem; font-weight: bold;">Total Spent</p>
+        <h2><?= $loggedInUser['currency_preference'] ?> <?= number_format($data['spent']) ?></h2>
         <?php $pct = $data['budget_pool'] > 0 ? round(($data['spent'] / $data['budget_pool']) * 100) : 0; ?>
-        <p style="color: #D24153; font-size: 0.8rem; margin-top: 0.5rem;"><?= $pct ?>% of current pool</p>
+        <p style="color: var(--color-red-main); font-size: 0.8rem; margin-top: 0.5rem;"><?= $pct ?>% of current pool</p>
     </div>
 
-    <div class="metric-card" style="background-color: #E2FCEF; border: none; padding: 1.5rem; border-radius: 16px;">
-        <p style="color: #0B8A61; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; font-size: 0.75rem; font-weight: bold;">Remaining</p>
-        <h2 style="font-size: 1.8rem; color: #086345;"><?= $loggedInUser['currency_preference'] ?> <?= number_format($data['remaining']) ?></h2>
-        <p style="color: #0B8A61; font-size: 0.8rem; margin-top: 0.5rem;">Available to spend</p>
+    <div class="metric-card metric-card-income">
+        <p style="color: var(--color-green-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; font-size: 0.75rem; font-weight: bold;">Remaining</p>
+        <h2><?= $loggedInUser['currency_preference'] ?> <?= number_format($data['remaining']) ?></h2>
+        <p style="color: var(--color-green-dark); font-size: 0.8rem; margin-top: 0.5rem;">Available to spend</p>
     </div>
 
     <?php if ($data['status_value'] >= 0): ?>
-    <div class="metric-card" style="background-color: #F8FAFC; border: 1px solid #E2E8F0; padding: 1.5rem; border-radius: 16px;">
-        <p style="color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; font-size: 0.75rem; font-weight: bold;">Saved This Month</p>
-        <h2 style="font-size: 1.8rem; color: #334155;"><?= $loggedInUser['currency_preference'] ?> <?= number_format($data['status_value']) ?></h2>
+    <div class="metric-card">
+        <p style="color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; font-size: 0.75rem; font-weight: bold;">Saved This Month</p>
+        <h2><?= $loggedInUser['currency_preference'] ?> <?= number_format($data['status_value']) ?></h2>
     </div>
     <?php else: ?>
-    <div class="metric-card" style="background-color: #FFEAEC; border: 1px solid #D24153; padding: 1.5rem; border-radius: 16px;">
-        <p style="color: #B31E2A; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; font-size: 0.75rem; font-weight: bold;"><i class="ph ph-warning"></i> Overspent Month</p>
-        <h2 style="font-size: 1.8rem; color: #B31E2A;">- <?= $loggedInUser['currency_preference'] ?> <?= number_format(abs($data['status_value'])) ?></h2>
+    <div class="metric-card metric-card-expense" style="border: 1px solid var(--color-red-main);">
+        <p style="color: var(--color-red-main); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; font-size: 0.75rem; font-weight: bold;"><i class="ph ph-warning"></i> Overspent Month</p>
+        <h2 style="color: var(--color-red-main);">- <?= $loggedInUser['currency_preference'] ?> <?= number_format(abs($data['status_value'])) ?></h2>
     </div>
     <?php endif; ?>
 </div>
@@ -59,7 +59,7 @@
         <i class="ph ph-plus-circle" style="font-size: 18px;"></i> Add Income
     </button>
 
-    <a href="index.php?page=reports" class="btn btn-outline" style="background-color: #F1F5F9; border: none; text-decoration: none; color: inherit;">
+    <a href="index.php?page=reports" class="btn btn-outline" style="background-color: var(--bg-hover); border: none; text-decoration: none;">
         <i class="ph ph-file-text" style="font-size: 18px;"></i> View Reports
     </a>
 </div>
@@ -69,7 +69,7 @@
     
     <!-- Left Col: Transactions -->
     <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; color: var(--text-primary);">
             <h3>Recent Transactions</h3>
             <a href="index.php?page=transactions" style="color: var(--color-green-dark); font-weight: 600; font-size: 0.9rem;">See All</a>
         </div>
@@ -79,13 +79,13 @@
                 <p class="text-muted">No transactions found.</p>
             <?php else: ?>
                 <?php foreach($data['recent'] as $trx): ?>
-                <div class="card" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-radius: 12px;">
+                <div class="card" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-radius: 12px; background: var(--bg-card); color: var(--text-primary);">
                     <div style="display: flex; align-items: center; gap: 1rem;">
-                        <div style="background: #F1F5F9; padding: 10px; border-radius: 8px; font-size: 1.2rem; display:flex; align-items:center;">
+                        <div style="background: var(--bg-hover); padding: 10px; border-radius: 8px; font-size: 1.2rem; display:flex; align-items:center; color: var(--text-primary);">
                             <i class="ph <?= $trx['icon'] ?>"></i>
                         </div>
                         <div>
-                            <h4 style="font-size: 1rem; margin-bottom: 4px;"><?= htmlspecialchars($trx['title']) ?></h4>
+                            <h4 style="font-size: 1rem; margin-bottom: 4px; color: var(--text-primary);"><?= htmlspecialchars($trx['title']) ?></h4>
                             <p class="text-muted"><?= htmlspecialchars($trx['date']) ?> &bull; <?= htmlspecialchars($trx['category']) ?><?= !empty($trx['payment_method']) ? ' &bull; ' . htmlspecialchars($trx['payment_method']) : '' ?></p>
                         </div>
                     </div>
@@ -100,10 +100,10 @@
 
     <!-- Right Col: Charts -->
     <div style="display: flex; flex-direction: column; gap: 2rem;">
-        <div class="card" style="background-color: #F8F9FB; border: 1px solid #E2E8F0; padding: 2rem;">
+        <div class="card" style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 2rem; color: var(--text-primary);">
             <h3 style="margin-bottom: 1.5rem;">Expense Breakdown</h3>
-            <div style="width: 180px; height: 180px; border-radius: 50%; background: conic-gradient(var(--color-red-main) 0% <?= $pct ?>%, #E2E8F0 <?= $pct ?>% 100%); margin: 0 auto; display: flex; align-items: center; justify-content: center;">
-                <div style="width: 120px; height: 120px; background-color: #F8F9FB; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div style="width: 180px; height: 180px; border-radius: 50%; background: conic-gradient(var(--color-red-main) 0% <?= $pct ?>%, var(--border-color) <?= $pct ?>% 100%); margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                <div style="width: 120px; height: 120px; background-color: var(--bg-card); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                     <span style="font-size: 1.5rem; font-weight: bold;"><?= $pct ?>%</span>
                     <span class="text-muted" style="font-size: 0.75rem; text-transform: uppercase; font-weight: bold;">Spent</span>
                 </div>
@@ -122,15 +122,15 @@
     background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;
 }
 .modal-content {
-    background: white; padding: 2rem; border-radius: 12px; width: 100%; max-width: 400px;
+    background: var(--bg-card); padding: 2rem; border-radius: 12px; width: 100%; max-width: 400px;
     position: relative;
 }
 .modal-close {
-    position: absolute; top: 1rem; right: 1rem; cursor: pointer; font-size: 1.5rem; color: #64748b;
+    position: absolute; top: 1rem; right: 1rem; cursor: pointer; font-size: 1.5rem; color: var(--text-secondary);
 }
 .form-group { margin-bottom: 1rem; }
 .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.9rem; }
-.form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid #E2E8F0; border-radius: 8px; }
+.form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; }
 </style>
 
 <script>
@@ -227,5 +227,6 @@ function closeModal(id) { document.getElementById(id).style.display = 'none'; }
         </form>
     </div>
 </div>
+
 
 

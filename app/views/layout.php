@@ -41,10 +41,13 @@ if (isset($_SESSION['user_id'])) {
             </div>
 
             <div class="profile-section">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 0.9rem; font-weight: 500;"><?= htmlspecialchars(explode(' ', $loggedInUser['full_name'])[0]) ?></span>
+                <button id="theme-toggle" class="btn btn-outline" style="padding: 0.5rem; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); cursor: pointer;">
+                    <i id="theme-icon" class="ph ph-moon" style="font-size: 20px;"></i>
+                </button>
+                <a href="index.php?page=profile" style="display: flex; align-items: center; gap: 8px; text-decoration: none; cursor: pointer;">
+                    <span style="font-size: 0.9rem; font-weight: 500; color: var(--text-primary);"><?= htmlspecialchars(explode(' ', $loggedInUser['full_name'])[0]) ?></span>
                     <div class="profile-pic"><?= strtoupper(substr($loggedInUser['full_name'], 0, 1)) ?></div>
-                </div>
+                </a>
                 <a href="index.php?page=logout" style="text-decoration: none;">
                     <i class="ph ph-sign-out" style="font-size: 24px; color: var(--text-secondary); cursor: pointer;"></i>
                 </a>
@@ -64,6 +67,38 @@ if (isset($_SESSION['user_id'])) {
     </div>
     <?php endif; ?>
     <script>
+        // Theme Management
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+
+        // Check for saved theme or default to 'light'
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+        }
+
+        function updateThemeIcon(theme) {
+            if (!themeIcon) return;
+            if (theme === 'dark') {
+                themeIcon.classList.remove('ph-moon');
+                themeIcon.classList.add('ph-sun');
+            } else {
+                themeIcon.classList.remove('ph-sun');
+                themeIcon.classList.add('ph-moon');
+            }
+        }
+
         // Force a reload if the page is loaded from the Back-Forward Cache (BFCache)
         window.onpageshow = function(event) {
             if (event.persisted) {
@@ -86,3 +121,4 @@ if (isset($_SESSION['user_id'])) {
     </script>
 </body>
 </html>
+

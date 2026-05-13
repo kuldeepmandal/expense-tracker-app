@@ -6,16 +6,16 @@
  * @description UI View component.
  */
 ?>
-<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #F8FAFC;">
-    <div class="card" style="width: 100%; max-width: 400px; padding: 2rem; background: white; border-radius: 12px; border: 1px solid #E2E8F0;">
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: var(--bg-body);">
+    <div class="card" style="width: 100%; max-width: 400px; padding: 2rem; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color);">
         <div style="text-align: center; margin-bottom: 2rem;">
             <h1 style="color: var(--color-green-dark); font-size: 2rem; margin-bottom: 0.5rem;"><i class="ph ph-envelope-open"></i> Spendly</h1>
             <h2 style="font-size: 1.5rem; color: #1E293B;">Verify Your Email</h2>
-            <p style="color: #64748B; font-size: 0.9rem; margin-top: 0.5rem;">We've sent a 6-digit code to your email. It will expire in 15 minutes.</p>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">We've sent a 6-digit code to your email. It will expire in 15 minutes.</p>
         </div>
 
         <?php if(!empty($error)): ?>
-            <div style="background: #FFEAEC; color: #D24153; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; text-align: center;">
+            <div style="background: var(--color-red-light); color: var(--color-red-dark); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; text-align: center;">
                 <?= htmlspecialchars($error) ?>
             </div>
         <?php endif; ?>
@@ -32,3 +32,4 @@
         </form>
     </div>
 </div>
+
