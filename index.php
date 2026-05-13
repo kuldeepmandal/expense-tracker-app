@@ -9,7 +9,7 @@ header("Pragma: no-cache");
 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 
 // Public routes
-if ($page === 'login' || $page === 'register' || $page === 'verify') {
+if ($page === 'login' || $page === 'register' || $page === 'verify' || $page === 'forgot_password' || $page === 'reset_password') {
     require_once 'app/controllers/AuthController.php';
     $controller = new AuthController();
     if ($page === 'login') {
@@ -18,6 +18,10 @@ if ($page === 'login' || $page === 'register' || $page === 'verify') {
         $controller->register();
     } elseif ($page === 'verify') {
         $controller->verify();
+    } elseif ($page === 'forgot_password') {
+        $controller->forgotPassword();
+    } elseif ($page === 'reset_password') {
+        $controller->resetPassword();
     }
     exit;
 }

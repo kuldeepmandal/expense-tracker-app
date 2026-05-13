@@ -48,6 +48,11 @@ class ReportsController {
         $user = $userModel->getUser($userId);
         $currency = $user['currency_preference'];
         
+        if (isset($_GET['action']) && $_GET['action'] === 'download') {
+            $this->downloadReport($userId, $currentMonth, $currency, $transactionModel, $budgetModel);
+            exit;
+        }
+        
         $expensesByCategory = $transactionModel->getExpensesByCategory($userId, $currentMonth);
         $categoryLimits = $budgetModel->getCategoryLimits($userId, $currentMonth);
 
@@ -55,10 +60,16 @@ class ReportsController {
         $standardCategories = ['Food', 'Transport', 'Utilities', 'Shopping', 'Other'];
         
         // Prepare data for view
+        $summary = $transactionModel->getCurrentMonthSummary($userId, $currentMonth);
+        $totalIncome = $summary['income'] ?? 0;
+        $totalSpent = $summary['expense'] ?? 0;
+        $baseBudget = $categoryLimits['Overall'] ?? 0;
+        $statusValue = ($baseBudget + $totalIncome) - $totalSpent;
+        
         $allocations = [];
         foreach ($standardCategories as $cat) {
             $spent = $expensesByCategory[$cat] ?? 0;
-            $limit = $categoryLimits[$cat] ?? 0;
+            $limit = $categoryLimits[$cat] ?? 2000;
             $allocations[] = [
                 'category' => $cat,
                 'spent' => $spent,
@@ -71,6 +82,56 @@ class ReportsController {
         $page = 'reports';
         $view = 'app/views/reports.php';
         require_once 'app/views/layout.php';
+    }
+
+    /**
+     * Generates and downloads a CSV report for the given month.
+     */
+    private function downloadReport($userId, $month, $currency, $transactionModel, $budgetModel) {
+        $summary = $transactionModel->getCurrentMonthSummary($userId, $month);
+        $totalIncome = $summary['income'] ?? 0;
+        $totalSpent = $summary['expense'] ?? 0;
+        
+        $categoryLimits = $budgetModel->getCategoryLimits($userId, $month);
+        $baseBudget = $categoryLimits['Overall'] ?? 0;
+        
+        $statusValue = ($baseBudget + $totalIncome) - $totalSpent;
+        $statusLabel = $statusValue >= 0 ? "Saved/Remaining" : "Overspent";
+        $statusAmount = abs($statusValue);
+        
+        $transactions = $transactionModel->getAll($userId, $month);
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=spendly_report_' . $month . '.csv');
+
+        $output = fopen('php://output', 'w');
+        
+        // Add title and summary
+        fputcsv($output, ['Spendly Monthly Report', $month]);
+        fputcsv($output, []);
+        fputcsv($output, ['--- SUMMARY ---']);
+        fputcsv($output, ["Base Budget ($currency)", $baseBudget]);
+        fputcsv($output, ["Total Income ($currency)", $totalIncome]);
+        fputcsv($output, ["Total Expense ($currency)", $totalSpent]);
+        fputcsv($output, ["$statusLabel ($currency)", $statusAmount]);
+        fputcsv($output, []);
+        
+        // Add transactions header
+        fputcsv($output, ['--- TRANSACTIONS ---']);
+        fputcsv($output, ['Date', 'Title / Category', 'Payment Method', 'Type', "Amount ($currency)"]);
+        
+        foreach ($transactions as $tx) {
+            $title = $tx['description'] ? $tx['description'] . " (" . $tx['category'] . ")" : $tx['category'];
+            fputcsv($output, [
+                date('Y-m-d', strtotime($tx['transaction_date'])),
+                $title,
+                $tx['payment_method'] ?? 'N/A',
+                strtoupper($tx['type']),
+                $tx['amount']
+            ]);
+        }
+
+        fclose($output);
     }
 }
 ?>
